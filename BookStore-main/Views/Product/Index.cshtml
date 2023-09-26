@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Popis svih knjiga";
+
+    Pager pager = new Pager();
+    int pageNumber = 0;
+
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNumber = pager.CurrentPage;
+
+    }
+}
+
+<form asp-action="Index" asp-controller="Product" class="col-2 my-1 p-2">
+    <div>
+        <h1>Tražilica</h1>
+        <div class="my-1">
+            <input type="text" name="searchString" placeholder="Unesite naziv ili autora djela" class="form-control-sm col-12" />
+        </div>
+        <div class="my-1">
+            <input type="number" name="minPrice" step="1" placeholder="min kn" class="form-control-sm col-5" />&nbsp;&#8212;&nbsp;<input type="number" name="maxPrice" step="1" placeholder="max kn" class="form-control-sm col-5" />
+        </div>
+        <input type="submit" value="Pretraga" class="btn btn-primary btn-sm" />
+        <a asp-action="Index" class="btn btn-secondary btn-sm float-right">Poništi</a>
+    </div>
+</form>
+
+<div class="row">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-xs-6 border-primary mb-3">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-header bg-primary text-white">
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.Name
+                                        <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@item.ImageUrl" style="width:100%;height:300px;" alt="@item.Name">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <p class="card-text"><b>Naziv: </b>@item.Name</p>
+                                <p class="card-text"><b>Autor: </b>@item.Author</p>
+                                <p class="card-text"><b>Kategorija: </b>@item.Category.Name</p>
+                                <p class="card-text"><b>PodKategorija: </b>@item.SubCategory.Name</p>
+                                <p class="card-text"><b>User: </b>@item.User.UserName</p>
+                                <p class="card-text"><b>Cijena: </b>@item.Price kn</p>
+                                <p class="card-text">@item.Description</p>
+                                @if (@ViewBag.User != item.UserId)
+                                {
+                                    @if (@item.Stock == true)
+                                    {
+                                        @if (Context.User.Identity.IsAuthenticated && User.IsInRole("User"))
+                                        {
+                                            
+                                            <a class="btn btn-success" asp-controller="Order" asp-action="AddToCart" asp-route-id="@item.Id">
+                                                <i class="fas fa-regular fa-shopping-basket mr-2"></i>
+                                                Add To Cart
+                                            </a>
+                                        }
+                                    }
+
+                                    @if (@item.Stock != true)
+                                    {
+                                        <p class="card-text"><b> Proizvod nije dostupan </b></p>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer ">
+                                <p class="card-text">
+                                    <a class="btn btn-outline-primary float-right" asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Detalji
+                                    </a>
+                                    @if (Context.User.Identity.IsAuthenticated && User.IsInRole("User"))
+                                    {
+                                        @if (@ViewBag.User == item.UserId)
+                                        {
+                                            <span class="alert alert-info">
+                                                <a class="btn btn-outline-info btn-sm float-left" asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id">
+                                                    Edit
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id">
+                                                    <input type="submit" value="Izbrišite" class="btn btn-outline-danger btn-sm float-right"/>
+                                                </a>
+                                            </span>
+                                        }
+
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<partial name="_pager" model="@pager" />

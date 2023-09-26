@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Korisnički profil";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <table class="table table-striped table-hover">
+            @foreach (var item in Model)
+            {
+                @if (ViewBag.UserId == item.Id)
+                {
+                    <tr>
+                        <th>@Html.DisplayNameFor(x=>x.Email)</th>
+                        <td>@Html.DisplayFor(x=>item.Email)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(x=>x.UserName)</th>
+                        <td>@Html.DisplayFor(x=>item.UserName)</td>
+                    </tr>
+
+                }
+
+            }
+        </table>
+    </div>
+</div>

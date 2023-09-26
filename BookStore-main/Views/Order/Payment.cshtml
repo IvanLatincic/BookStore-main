@@ -1,0 +1,103 @@
+﻿@model IEnumerable<ShoppingCartItem>
+@{
+    ViewData["Title"] = "Košarica";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h3>Košarica</h3>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Količina</th>
+                    <th>Proizvod</th>
+                    <th>Cijena</th>
+                    <th>Ukupno</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Amount</td>
+                        <td class="align-middle">@item.Product.Name</td>
+                        <td class="align-middle">@item.Product.Price</td>
+                        <td class="align-middle">@((item.Product.Price * item.Amount).ToString("c"))</td>
+                        <td>
+                            <a class="text-danger" asp-controller="Order" asp-action="RemoveFromCart"
+                               asp-route-id="@item.Product.Id">
+                                <i class="fas fa-regular fa-minus"></i>
+                            </a>
+                            <a class="text-success" asp-controller="Order" asp-action="AddToCart"
+                               asp-route-id="@item.Product.Id">
+                                <i class="fas fa-regular fa-plus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="collapse-2"></td>
+                    <td><b>Ukupno:</b></td>
+                    <td>@(ViewBag.Total.ToString("c"))</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="text-center">
+            <div class="btn btn-group">
+                <i class="fas fa-regular fa-check mr-2"></i>
+                @if (User.Identity.IsAuthenticated && Model.Count() > 0)
+                {
+                    <div id="paypal-button"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="paypal-button"></div>
+
+@section Scripts{
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        var _total = @Html.Raw(ViewBag.Total);
+        paypal.Button.render({
+            env: 'sandbox',
+            client: {
+                sandbox: 'ARJIQYeXSXtTZiivgXETCdlnt8Q4sm-5pv3O8hfu4akICPG7odYumy_kWBrpesUNmHEXu7Ex61mB_tXqARJIQYeXSXtTZiivgXETCdlnt8Q4sm-5pv3O8hfu4akICPG7odYumy_kWBrpesUNmHEXu7Ex61mB_tXqARJIQYeXSXtTZiivgXETCdlnt8Q4sm-5pv3O8hfu4akICPG7odYumy_kWBrpesUNmHEXu7Ex61mB_tXq'
+            },
+            locale: 'en_US',
+            region: 'HR',
+            style: {
+                color: 'gold',
+                size: 'small',
+                shape: 'pill'
+            },
+
+            commit: true,
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _total,
+                            currency: 'EUR'
+                        }
+                    }]
+                });
+            },
+
+            onAuthorize: function (data, actions) {
+                return actions.payment.get().then(function () {
+                    var url = '@Url.Action("CompleteTheOrder", "Order", new { })';
+                    window.location.href = url;
+                });
+            }
+        }, '#paypal-button')
+    </script>
+}

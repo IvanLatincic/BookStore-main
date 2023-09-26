@@ -1,0 +1,42 @@
+﻿@model List<SubCategory>
+
+@{
+    ViewBag.Title = "Pregled proizvoda po potkategorijama";
+}
+
+<h1> Pregled proizvoda po potkategorijama </h1>
+
+<div class="row">
+    <div class="col-sm-2">
+        <div class="list-group">
+            @foreach (var category in ViewBag.Categories)
+            {
+                <a asp-controller="SubCategory" asp-action="ListBySubcategory" asp-route-id="@category.Id" class="list-group-item
+                   @(ViewBag.SelectedCategory==@category.Id ? "active": "") ">@category.Name</a>
+            }
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th> Podkategorija </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>
+                            <a asp-action="ListBySubcategories" asp-controller="Product" asp-route-id="@product.Id"> Popis proizvoda </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<a asp-controller="Product" asp-action="Index" class="btn btn-primary"> Popis svih proizvoda </a>

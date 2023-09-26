@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Popis knjiga";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa-solid fa-book"></i> Dodajte proizvod </a>
+</p>
+
+<div class="row">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-xs-6 border-primary mb-3">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-header bg-primary text-white">
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.Name
+                                        <a class="text-white float-right" asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@item.ImageUrl" width="100%" alt="@item.Name">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <p class="card-text"><b>Naziv: </b>@item.Name</p>
+                                <p class="card-text"><b>Autor: </b>@item.Author</p>
+                                <p class="card-text"><b>Kategorija: </b>@item.Category.Name</p>
+                                <p class="card-text"><b>PodKategorija: </b>@item.SubCategory.Name</p>
+                                <p class="card-text"><b>Prodavač: </b>@item.User.UserName</p>
+                                <p class="card-text"><b>Cijena: </b>@item.Price kn</p>
+                                <p class="card-text">@item.Description</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer ">
+                                <p class="card-text">
+                                    <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Detalji
+                                    </a>
+                                    <a class="btn btn-outline-primary float-right" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i></i> Uredi
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id">
+                                        <input type="submit" value="Izbrišite" class="btn btn-outline-danger btn-sm float-right"
+                                           onclick="return confirm('Da li ste sigurni da želite izbrisati ovaj proizvod?')" />
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("#ImageUrl").on("change", function () {
+            var Result = document.getElementById("imagePreview");
+            Result.src = $(this).val();
+        })
+    </script>
+}

@@ -1,0 +1,106 @@
+﻿@using BookStore.Data
+@model BookStore.Data.ViewModels.ProductVM;
+
+@{
+    ViewData["Title"] = "Ažuriranje proizvoda";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4> Ažuriranje proizvoda </h4>
+        </p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Author" class="control-label"></label>
+                                <input asp-for="Author" class="form-control" />
+                                <span asp-validation-for="Author" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Language" class="control-label"></label>
+                                <input asp-for="Language" class="form-control" />
+                                <span asp-validation-for="Language" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="State" class="control-label"></label>
+                                <input asp-for="State" class="form-control" />
+                                <span asp-validation-for="State" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" type="number" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageUrl" class="control-label"></label>
+                                <input asp-for="ImageUrl" class="form-control" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CategoryId" class="control-label"></label>
+                                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SubCategoryId" class="control-label"></label>
+                                <select asp-for="SubCategoryId" class="form-control" asp-items="ViewBag.SubCategories"></select>
+                                <span asp-validation-for="SubCategoryId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4 offset-4 text-center">
+                        <img width="100%" id="ImageUrlPreview" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Ažuriraj" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Index"> Povratak na popis proizvoda </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("#ImageUrl").on("change", function () {
+            var Result = document.getElementById("imagePreview");
+            Result.src = $(this).val();
+        })
+    </script>
+}

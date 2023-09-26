@@ -1,0 +1,71 @@
+﻿@model BookStore.Models.Product
+
+@{
+    ViewData["Title"] = "$Detalji o proizvodu {Model.Name}";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header bg-primary text-white">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Name
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="@Model.ImageUrl" width="100%" alt="@Model.Name">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text"><b>Naziv: </b>@Model.Name</p>
+                        <p class="card-text"><b>Autor: </b>@Model.Author</p>
+                        <p class="card-text">
+                            <b>Kategorija: </b>
+                           
+                                @Model.Category.Name
+                            
+                         
+                        </p>
+                        <p class="card-text"><b>Cijena: </b>@Model.Price kn</p>
+                        <p class="card-text">@Model.Description</p>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                Povratak na listu proizvoda
+                            </a>
+                            @if (@ViewBag.User != Model.UserId)
+                            {
+                                @if (@Model.Stock == true)
+                                {
+                                    @if (Context.User.Identity.IsAuthenticated && User.IsInRole("User"))
+                                    {
+
+                                        <a class="btn btn-success" asp-controller="Order" asp-action="AddToCart" asp-route-id="@Model.Id">
+                                            <i class="fas fa-regular fa-shopping-basket mr-2"></i>
+                                            Add To Cart
+                                        </a>
+                                    }
+                                }
+
+                                @if (@Model.Stock != true)
+                                {
+                                <p class="card-text"><b> Proizvod nije dostupan </b></p>
+                                }
+
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

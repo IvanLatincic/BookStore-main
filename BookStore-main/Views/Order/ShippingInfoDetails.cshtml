@@ -1,0 +1,57 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Detalji";
+}
+
+<h1>Detalji dostave</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.ZipCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.ZipCode)
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.County)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.County)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShippingInfo.Contact)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShippingInfo.Contact)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" aspasp-controller="Order" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i>Vratite se natrag na pregled narudžbe</a>
+</div>

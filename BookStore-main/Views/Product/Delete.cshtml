@@ -1,0 +1,74 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Brisanje podataka o proizvodu";
+}
+
+<h1> Izbrišite proizvod @Model.Name </h1>
+
+<h3> Da li ste sigurni da želite izbrisati ovaj proizvod? </h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubCategory.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubCategory.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.UserName)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <a asp-action="ListOnlyCurrentUsersProducts" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> Vratite se natrag na pregled svojih proizvoda </a>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Izbrišite proizvod" class="btn btn-danger" onclick="return confirm('Da li ste sigurni da želite izbrisati ovaj proizvod?')" />
+    </form>
+</div>

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ShoppingCartItem>
+@{
+    ViewData["Title"] = "Košarica";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h3>Košarica</h3>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Količina</th>
+                    <th>Proizvod</th>
+                    <th>Cijena</th>
+                    <th>Ukupno</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Amount</td>
+                        <td class="align-middle">@item.Product.Name</td>
+                        <td class="align-middle">@item.Product.Price</td>
+                        <td class="align-middle">@((item.Product.Price * item.Amount).ToString("c"))</td>
+                        <td>
+                            <a class="text-danger" asp-controller="Order" asp-action="RemoveFromCart"
+                           asp-route-id="@item.Product.Id">
+                                <i class="fas fa-regular fa-minus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="collapse-2"></td>
+                    <td><b>Ukupno:</b></td>
+                    <td>@(ViewBag.Total.ToString("c"))</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="text-center">
+            <div class="btn btn-group">
+                @if (ViewBag.Total != 0)
+                {
+                    <a class="btn btn-outline-success" asp-controller="Order" asp-action="CreateShippingInfo">
+                        <i class="fas fa-regular fa-check mr-2"></i>
+                        Završite kupnju
+                    </a>
+                }
+                <a class="btn btn-outline-info mr-3" asp-controller="Product" asp-action="Index">
+                    <i class="fas fa-regular fa-refresh mr-2"></i>
+                    Nastavite s kupnjom
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

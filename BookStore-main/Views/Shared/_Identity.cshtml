@@ -1,0 +1,69 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> _userManager;
+@if (!User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-outline-success mr-2" asp-action="Login" asp-controller="Account">
+        <i class="fas fa-regular fa-arrow-right-to-bracket"></i> Login
+    </a>
+    <a class="btn btn-outline-secondary mr-2" asp-action="Index" asp-controller="Account">
+        <i class="fas fa-regular fa-user-check"></i> Register
+    </a>
+}
+else
+{
+    <div class="dropdown">
+        <button class="btn  btn-outline-info dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-person mr-2"></i> Pozdrav, @_userManager.GetUserName(User)!
+        </button>
+        <div class="dropdown-menu" aria-labelledby="profile-btn">
+            <a class="dropdown-item" asp-controller="Account" asp-action="UserProfile">
+                <i class="fa-solid fa-user"></i> Moj profil
+            </a>
+            <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
+                <i class="fa-solid fa-lock"></i> Moja lozinka
+            </a>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Vendor"))
+            {
+                <a class="dropdown-item" asp-controller="Product" asp-action="ListOnlyCurrentUsersProducts">
+                    <i class="fa-solid fa-book"></i> Popis mojih proizvoda
+                </a>
+            }
+
+            @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+            {
+                <a class="dropdown-item" asp-controller="Order" asp-action="Index">
+                    <i class="fas fa-regular fa-list-check mr-2"></i> Moje narudžbe
+                </a>
+            }
+
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <a class="dropdown-item" asp-controller="Order" asp-action="Index">
+                    <i class="fas fa-regular fa-list-check mr-2"></i> Sve narudžbe
+                </a>
+            }
+            
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <a class="dropdown-item" asp-controller="Account" asp-action="Users">
+                    <i class="fas fa-regular fa-users mr-2"></i> Popis korisnika
+                </a>
+            }
+
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ListAllRoles">
+                    <i class="fas fa-regular fa-users mr-2"></i> Popis uloga
+                </a>
+            }
+            <form asp-controller="Account" asp-action="Logout">
+                <hr />
+                <button class="dropdown-item">
+                    <i class="fas fa-duotone fa-arrow-right-from-bracket"></i>
+                    Odjava
+                </button>
+            </form>
+        </div>
+    </div>
+}

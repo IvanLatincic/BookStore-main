@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IdentityRole
+
+<h3> Želite li izbrisati ulogu "@Model.Name"? </h3>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="ConfirmDelete" asp-route-id="@Model.Id" class="mt-3">
+    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Izbriši </button>
+    <div class="mt-2">
+        <a asp-action="ListAllRoles" class="btn btn-warning"><i class="fa-solid fa-ban"></i> Odustani</a>
+    </div>
+</form>
